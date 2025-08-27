@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soma em Coluna - Exercícios Interativos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --primary-bg: #fffbf5;
+            --accent-color: #fcd34d;
+            --accent-dark: #fbbf24;
+            --text-color: #333;
+            --gray-light: #f3f4f6;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 64rem;
+            margin: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .button-group button {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            background-color: white;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        .button-group button:hover {
+            background-color: var(--gray-light);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .panel {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        
+        .problem-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .problem-info .text-sm {
+            font-size: 0.875rem;
+        }
+        
+        .problem-info .text-xl {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .action-button {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            background-color: var(--accent-color);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .action-button:hover {
+            background-color: var(--accent-dark);
+        }
+
+        .problem-display {
+            background-color: var(--primary-bg);
+            border-radius: 0.25rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .problem-visual {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 0.5rem;
+            user-select: none;
+        }
+
+        .carries {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 4rem;
+            font-size: 1rem;
+            font-family: 'Roboto Mono', monospace;
+            height: 4.5rem; /* space for 3 digits + carries */
+        }
+        .carries > div {
+            height: 1.5rem;
+            font-weight: 700;
+            color: #d97706; /* amber-600 */
+        }
+
+        .numbers {
+            text-align: right;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2rem;
+        }
+        @media (min-width: 768px) {
+            .numbers {
+                font-size: 3rem;
+            }
+        }
+
+        .numbers .line-1, .numbers .line-2 {
+            line-height: 1.2;
+        }
+        
+        .numbers .result {
+            border-top: 2px solid var(--text-color);
+            margin-top: 0.25rem;
+            padding-top: 0.25rem;
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+        @media (min-width: 768px) {
+            .numbers .result {
+                font-size: 3.5rem;
+            }
+        }
+
+        .navigation-buttons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .nav-button {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .nav-button:hover {
+            background-color: var(--gray-light);
+        }
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .main-button {
+            padding: 0.75rem 1rem;
+            border-radius: 0.25rem;
+            background-color: var(--accent-dark);
+            color: black;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .main-button:hover {
+            background-color: #f59e0b; /* amber-500 */
+        }
+
+        .hint-toggle {
+            display: block;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+        .hint-toggle button {
+            background: none;
+            border: none;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .hint-box {
+            margin-top: 0.75rem;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            text-align: left;
+        }
+
+        .help-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .help-section h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .help-section ol {
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+        .help-section li {
+            margin-bottom: 0.25rem;
+        }
+
+        .help-section p {
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .divider {
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.5rem;
+        }
+
+        .keyboard-hint {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        .keyboard-hint kbd {
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            padding: 0.1rem 0.4rem;
+        }
+
+        footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Soma em Coluna — Passo a passo</h1>
+        <div class="button-group">
+            <button onclick="resetCurrentProblem()" aria-label="Reiniciar exercício">
+                🔄 Reiniciar
+            </button>
+            <button onclick="completeAllProblems()" aria-label="Resolver tudo">
+                ✅ Resolver tudo
+            </button>
+        </div>
+    </header>
+
+    <main class="main-grid">
+        <section class="panel">
+            <div class="problem-info">
+                <div>
+                    <div class="text-sm">Exercício</div>
+                    <div class="text-xl" id="problem-number">1 / 9</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm">Toque para ouvir</div>
+                    <button class="action-button mt-1" onclick="speakProblem()">🔊 Ouvir</button>
+                </div>
+            </div>
+
+            <div class="problem-display">
+                <div class="text-xs mb-2">Siga: Unidades → Dezenas → Centenas</div>
+                <div class="problem-visual">
+                    <div class="carries">
+                        <div id="carry-hundreds"></div>
+                        <div id="carry-tens"></div>
+                        <div id="carry-units"></div>
+                    </div>
+                    <div class="numbers">
+                        <div class="line-1" id="number-a"></div>
+                        <div class="line-2" id="number-b"></div>
+                        <div class="result" id="result-line"></div>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-button" id="prev-button" onclick="setProblemIndex(currentIndex - 1)" aria-label="Exercício anterior">⬅️</button>
+                    <button class="main-button" onclick="checkNextStep()" aria-label="Verificar próximo passo">
+                        ▶️ Verificar passo
+                    </button>
+                    <button class="nav-button" id="next-button" onclick="setProblemIndex(currentIndex + 1)" aria-label="Próximo exercício">➡️</button>
+                </div>
+
+                <div class="hint-toggle">
+                    <button id="hint-button" onclick="toggleHints()">Mostrar dica</button>
+                </div>
+
+                <div id="hint-box" class="hint-box" style="display: none;">
+                    <div><strong>Unidades:</strong> some os algarismos das unidades. Se for 10 ou mais, escreva só a unidade e suba 1.</div>
+                    <div><strong>Dezenas:</strong> some as dezenas e o que subiu das unidades.</div>
+                    <div><strong>Centenas:</strong> some as centenas e o que subiu das dezenas.</div>
+                </div>
+            </div>
+
+            <div class="keyboard-hint">Dica: use as setas do teclado para navegar e a barra de espaço para avançar o passo.</div>
+        </section>
+
+        <aside class="panel help-section">
+            <h2 class="font-semibold">Ajuda visual</h2>
+            <ol>
+                <li>Toque **Verificar passo** — o app calcula a coluna atual (unidades primeiro).</li>
+                <li>O resultado aparece grande, com o "vai 1" mostrado acima das colunas.</li>
+                <li>Se quiser, aperte **Reiniciar** para começar novamente.</li>
+            </ol>
+
+            <div class="divider">
+                <h3 class="font-semibold">Progresso salvo</h3>
+                <p>Tudo que você fizer fica salvo automaticamente no dispositivo.</p>
+                <div class="button-group mt-2">
+                    <button onclick="clearProgress()">🗑️ Apagar progresso</button>
+                </div>
+            </div>
+
+            <div class="divider">
+                <h3 class="font-semibold">Acessibilidade</h3>
+                <ul style="list-style-type: disc; padding-left: 1.25rem;">
+                    <li>Fontes grandes e botões altos para toque fácil.</li>
+                    <li>Leitura por voz disponível para cada exercício.</li>
+                    <li>Feedback imediato visual e sonoro a cada passo.</li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <footer>Feito para prática: Unidades → Dezenas → Centenas • Use as setas ou toque nos botões</footer>
+</div>
+
+<script>
+    const PROBLEMS = [
+        [544, 256], [624, 347], [564, 288], [545, 286], [654, 268],
+        [458, 259], [532, 399], [445, 298], [546, 298],
+    ];
+    const STORAGE_KEY = "soma_coluna_progress_v1";
+
+    let currentIndex = 0;
+    let state = [];
+
+    const getInitialState = () => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : PROBLEMS.map(() => ({ step: 0, carries: [0, 0, 0], answers: [null, null, null], showHints: false }));
+    };
+
+    const saveState = () => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    };
+
+    const render = () => {
+        const problemState = state[currentIndex];
+        const [a, b] = PROBLEMS[currentIndex];
+
+        const digits = (n) => {
+            const s = String(n).padStart(3, "0");
+            return [Number(s[0]), Number(s[1]), Number(s[2])];
+        };
+        const ad = digits(a);
+        const bd = digits(b);
+
+        document.getElementById('problem-number').innerText = `${currentIndex + 1} / ${PROBLEMS.length}`;
+        document.getElementById('number-a').innerText = String(a).padStart(3, " ");
+        document.getElementById('number-b').innerText = `+${String(b).padStart(2, " ")}`;
+        
+        // Corrigir formatação do resultado
+        let resultDisplay = '';
+        for (let i = 0; i < 3; i++) {
+            if (problemState.answers[i] !== null) {
+                resultDisplay += problemState.answers[i];
+            } else {
+                resultDisplay += ' ';
+            }
+        }
+        document.getElementById('result-line').innerText = resultDisplay;
+
+        document.getElementById('carry-hundreds').innerText = problemState.carries[0] > 0 ? `+${problemState.carries[0]}` : "";
+        document.getElementById('carry-tens').innerText = problemState.carries[1] > 0 ? `+${problemState.carries[1]}` : "";
+        document.getElementById('carry-units').innerText = problemState.carries[2] > 0 ? `+${problemState.carries[2]}` : "";
+
+        document.getElementById('hint-box').style.display = problemState.showHints ? 'block' : 'none';
+        document.getElementById('hint-button').innerText = problemState.showHints ? 'Ocultar dicas' : 'Mostrar dica';
+        
+        // Atualizar estado dos botões de navegação
+        document.getElementById('prev-button').disabled = currentIndex === 0;
+        document.getElementById('next-button').disabled = currentIndex === PROBLEMS.length - 1;
+    };
+
+    const speak = (text) => {
+        if (window.speechSynthesis) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "pt-BR";
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+    };
+
+    const setProblemIndex = (newIndex) => {
+        if (newIndex >= 0 && newIndex < PROBLEMS.length) {
+            currentIndex = newIndex;
+            render();
+        }
+    };
+
+    const resetCurrentProblem = () => {
+        state[currentIndex] = { step: 0, carries: [0, 0, 0], answers: [null, null, null], showHints: false };
+        saveState();
+        render();
+        speak("Exercício reiniciado");
+    };
+
+    const completeAllProblems = () => {
+        PROBLEMS.forEach((p, i) => {
+            const digits = (n) => String(n).padStart(3, "0").split('').map(Number);
+            const ad = digits(p[0]);
+            const bd = digits(p[1]);
+            const carries = [0, 0, 0];
+            const answers = [null, null, null];
+            
+            // Corrigir lógica de cálculo
+            let sum = ad[2] + bd[2];
+            answers[2] = sum % 10;
+            carries[1] = Math.floor(sum / 10);
+            
+            sum = ad[1] + bd[1] + carries[1];
+            answers[1] = sum % 10;
+            carries[0] = Math.floor(sum / 10);
+            
+            sum = ad[0] + bd[0] + carries[0];
+            answers[0] = sum % 10;
+            if (sum >= 10) {
+                // Se o resultado das centenas for >= 10, mostrar o número completo
+                answers[0] = sum;
+            }
+            
+            state[i] = { step: 3, carries, answers, showHints: false };
+        });
+        saveState();
+        render();
+        speak("Todos os exercícios foram resolvidos automaticamente.");
+    };
+
+    const checkNextStep = () => {
+        const problemState = state[currentIndex];
+        if (problemState.step >= 3) {
+            speak("Exercício já concluído.");
+            return;
+        }
+
+        const [a, b] = PROBLEMS[currentIndex];
+        const digits = (n) => String(n).padStart(3, "0").split('').map(Number);
+        const ad = digits(a);
+        const bd = digits(b);
+        
+        const colIndex = 2 - problemState.step; // 2, 1, 0 (unidades, dezenas, centenas)
+        const currentCarry = problemState.carries[colIndex];
+        const sum = ad[colIndex] + bd[colIndex] + currentCarry;
+        const digit = sum % 10;
+        const newCarry = Math.floor(sum / 10);
+
+        problemState.answers[colIndex] = digit;
+        
+        // Corrigir lógica do carry
+        if (colIndex > 0) {
+            problemState.carries[colIndex - 1] = newCarry;
+        }
+        
+        // Para a coluna das centenas, se houver carry, mostrar o número completo
+        if (colIndex === 0 && newCarry > 0) {
+            problemState.answers[0] = sum;
+        }
+        
+        problemState.step++;
+        
+        saveState();
+        render();
+        
+        // Melhorar feedback de voz
+        const carryText = currentCarry > 0 ? ` mais ${currentCarry} que subiu` : '';
+        const newCarryText = newCarry > 0 ? ` Sobe ${newCarry}.` : '';
+        speak(`${ad[colIndex]} mais ${bd[colIndex]}${carryText} é ${sum}. Escreve ${digit}.${newCarryText}`);
+    };
+
+    const toggleHints = () => {
+        state[currentIndex].showHints = !state[currentIndex].showHints;
+        saveState();
+        render();
+    };
+
+    const clearProgress = () => {
+        localStorage.removeItem(STORAGE_KEY);
+        state = getInitialState();
+        render();
+        speak("Progresso apagado. Todos os exercícios foram reiniciados.");
+    };
+
+    const speakProblem = () => {
+        const [a, b] = PROBLEMS[currentIndex];
+        speak(`Exercício ${currentIndex + 1}. ${a} mais ${b}.`);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        state = getInitialState();
+        render();
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight") {
+                e.preventDefault();
+                setProblemIndex(currentIndex + 1);
+            } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                setProblemIndex(currentIndex - 1);
+            } else if (e.key === " ") {
+                e.preventDefault();
+                checkNextStep();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+
