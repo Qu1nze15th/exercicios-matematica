@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soma em Coluna - Exercícios Interativos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Soma em Coluna</h1>
+            <div class="controls">
+                <button id="reset-btn" aria-label="Reiniciar exercício">🔄 Reiniciar</button>
+                <button id="audio-btn" aria-label="Ativar áudio">🔊 Áudio</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="exercise-display">
+                <div class="problem-display">
+                    <div class="carries">
+                        <span id="carry-hundreds"></span>
+                        <span id="carry-tens"></span>
+                        <span id="carry-units"></span>
+                    </div>
+                    <div class="numbers">
+                        <div id="number1">544</div>
+                        <div id="number2">+256</div>
+                        <div class="line"></div>
+                        <div id="result">???</div>
+                    </div>
+                </div>
+
+                <div class="step-display">
+                    <div id="step-description">Clique em "Próximo Passo" para começar</div>
+                </div>
+
+                <div class="navigation">
+                    <button id="prev-btn" aria-label="Exercício anterior">← Anterior</button>
+                    <button id="next-step-btn" aria-label="Próximo passo">Próximo Passo</button>
+                    <button id="next-btn" aria-label="Próximo exercício">Próximo →</button>
+                </div>
+
+                <div class="progress">
+                    <span id="current-exercise">1</span> de <span id="total-exercises">9</span>
+                </div>
+            </div>
+
+            <div class="instructions-panel">
+                <h2>Como Resolver</h2>
+                <ol>
+                    <li>Some primeiro as <strong>unidades</strong></li>
+                    <li>Se der 10 ou mais, escreva a unidade e <strong>vai 1</strong> para as dezenas</li>
+                    <li>Some as <strong>dezenas</strong> (incluindo o "vai 1")</li>
+                    <li>Se der 10 ou mais, escreva a dezena e <strong>vai 1</strong> para as centenas</li>
+                    <li>Some as <strong>centenas</strong> (incluindo o "vai 1")</li>
+                </ol>
+
+                <div class="hint-section">
+                    <button id="hint-btn">Mostrar Dica Extra</button>
+                    <div id="extra-hint" class="hidden">
+                        <p>Lembre-se: sempre comece pela coluna da direita (unidades) e vá movendo para a esquerda!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
